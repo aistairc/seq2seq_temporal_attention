@@ -1,0 +1,13 @@
+*.caffemodel
+*.h5
+*.log
+*.mp4
+*.npy
+*.pkl
+*.png
+!docs/images/*.png
+*.pyc
+data/*
+!data/Y2T/vocab.json
+/*.txt
+result/
