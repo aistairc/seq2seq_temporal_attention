@@ -137,11 +137,11 @@ def parse_args():
                         default=default_params.batch_size_val,
                         type=int,
                         help='batch size for evaluation (validation set)')
-    parser.add_argument('--numfold-enc',
+    parser.add_argument('--numfoldenc',
                         default=default_params.numfold_enc,
                         type=int,
                         help='number of LSTM units in encoding stage')
-    parser.add_argument('--numfold-dec',
+    parser.add_argument('--numfolddec',
                         default=default_params.numfold_dec,
                         type=int,
                         help='number of LSTM units in decoding stage')
@@ -578,8 +578,8 @@ if __name__ == '__main__':
                     lr=args.lr,
                     dropout=args.dropout,
                     batch_size_val=args.batchsizeval,
-                    numfold_enc=args.numfold_enc,
-                    numfold_dec=args.numfold_dec,
+                    numfold_enc=args.numfoldenc,
+                    numfold_dec=args.numfolddec,
                     weight_decay=args.weightdecay,
                     grad_clip=args.gradclip)
 
