@@ -4,7 +4,7 @@ Sequence-to-sequence Model with Temporal Attention
 __seq2seq\_temporal\_attention__ is a tool for __automatic video captioning__.
 This is an implementation of
 *Generating Video Description using Sequence-to-sequence Model with Temporal Attention*
-([PDF](https://staff.aist.go.jp/laokulrat.natsuda/paper/natsuda.coling2016.pdf)).
+([PDF](http://aclweb.org/anthology/C16-1005)).
 
 ## Requirements (Linux/Mac)
 
