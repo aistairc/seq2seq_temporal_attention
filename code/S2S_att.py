@@ -21,7 +21,7 @@ class Encoder(chainer.Chain):
         )
 
     def __call__(self, frame, prev_word, state, dropout_flag, dropout_ratio):
-        i1 = self.xi1(dropout(frame, dropout_ratio, dropout_flag))
+        i1 = self.xi1(dropout(frame, dropout_ratio))
         c1, h1 = lstm(state['c1'], self.ih1(i1) + self.hh1(state['h1']))
         i2 = self.xi2(prev_word)
         concat = array.concat.concat((i2, h1))

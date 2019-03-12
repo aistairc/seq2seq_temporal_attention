@@ -12,7 +12,7 @@ import numpy as np
 import h5py
 
 import chainer
-from chainer.functions import caffe
+from chainer.links import caffe
 from chainer import cuda
 
 """
@@ -60,9 +60,9 @@ def chainer_extract_features(input_folder, batchsize, layer='fc7'):
         i += 1
         if i == batchsize:
             x_data = xp.asarray(x_batch)
-            x = chainer.Variable(x_data, volatile=True)
+            x = chainer.Variable(x_data)
             try:
-                y, = func(inputs={'data': x}, outputs=[layer], train=False)
+                y, = func(inputs={'data': x}, outputs=[layer])
             except AttributeError as e:
                 mismatch(str(e))
             z[step - batchsize + 1:step + 1] = y.data
@@ -70,9 +70,9 @@ def chainer_extract_features(input_folder, batchsize, layer='fc7'):
             i = 0
     if not i == 0:
         x_data = xp.asarray(x_batch[0:i])
-        x = chainer.Variable(x_data, volatile=True)
+        x = chainer.Variable(x_data)
         try:
-            y, = func(inputs={'data': x}, outputs=[layer], train=False)
+            y, = func(inputs={'data': x}, outputs=[layer])
         except AttributeError as e:
             mismatch(str(e))
         z[len(frames) - i:len(frames)] = y.data
@@ -120,23 +120,7 @@ if __name__ == "__main__":
     xp = cuda.cupy if args.gpu >= 0 else np
 
     caffe_model = args.model
-    chainer_model_path = \
-        re.sub('\.caffemodel$', '.chainermodel.pkl', caffe_model)
-    chainer_model = None
-    if not os.path.isfile(chainer_model_path):
-        if not os.path.isfile(caffe_model):
-            print('{} is not found.'.format(caffe_model))
-            exit(1)
-        else:
-            print('Converting the caffemodel.')
-            print('It takes a while, ', end='')
-            print('but this process is not required from the next time.')
-            func = caffe.CaffeFunction(caffe_model)
-            pickle.dump(func,
-                        open(chainer_model_path, mode='wb+'))
-    else:
-        func = pickle.load(open(chainer_model_path, mode='rb'))
-
+    func = caffe.CaffeFunction(caffe_model)
     if args.gpu >= 0:
         cuda.get_device(args.gpu).use()
         func.to_gpu()

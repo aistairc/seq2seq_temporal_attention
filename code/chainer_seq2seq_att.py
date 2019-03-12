@@ -301,7 +301,10 @@ def forward(model, params, vocab, inv_vocab, src, target, mode, batch_size):
     src_b, inter_b, target_b = fill_batch_to_fixed_size(params, vocab, src, target)
     loss = xp.zeros((), dtype=xp.float32)
     dropout_ratio = params.dropout if isinstance(params.dropout, float) else 0.0
-
+    if mode == 'training':
+        chainer.global_config['train'] = True
+    else:
+        chainer.global_config['train'] = False
     for n in range(params.numfold_enc):
         xb = chainer.Variable(src_b[:, n])
         ib = chainer.Variable(xp.zeros((batch_size), dtype=xp.int32))
