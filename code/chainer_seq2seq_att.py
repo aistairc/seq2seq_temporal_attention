@@ -35,7 +35,7 @@ class _DefaultPaths:
 
     def __init__(self):
 
-        data_dir = os.path.join('..', 'data', 'Y2T')
+        data_dir = os.path.join("..", 'data', 'Y2T')
 
         self.feature = os.path.join(data_dir, 'y2t_vgg16.h5')
         self.train = os.path.join(data_dir, 'sents_train_lc_nopunc.txt')
@@ -302,9 +302,9 @@ def forward(model, params, vocab, inv_vocab, src, target, mode, batch_size):
     loss = xp.zeros((), dtype=xp.float32)
     dropout_ratio = params.dropout if isinstance(params.dropout, float) else 0.0
     if mode == 'training':
-        chainer.global_config['train'] = True
+        chainer.global_config.train= True
     else:
-        chainer.global_config['train'] = False
+        chainer.global_config.train = False
     for n in range(params.numfold_enc):
         xb = chainer.Variable(src_b[:, n])
         ib = chainer.Variable(xp.zeros((batch_size), dtype=xp.int32))
@@ -357,6 +357,7 @@ def get_current_score(model, vocab, inv_vocab, val_data, source, batch_size_val,
 
     with open(eval_filename, mode='w') as f:
         json.dump(caption_out, f)
+    print("evaluate on :", coco_ref_filename, eval_filename)
     score = eval_coco.eval_coco(coco_ref_filename, eval_filename)
     return score
 
